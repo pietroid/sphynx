@@ -8,6 +8,8 @@ from utils.decorators import singleton
 import modules.custom as customModules
 import modules.native as nativeModules
 
+import datetime
+
 def getModules(module):
     all_modules_classes = []
     for loader, module_name, is_pkg in pkgutil.walk_packages(
@@ -16,7 +18,7 @@ def getModules(module):
         for name,  obj in inspect.getmembers(_module):
             if(inspect.isclass(obj)):
                 all_modules_classes.append(obj)
-
+        print(all_modules_classes)
     return all_modules_classes
                 
 
@@ -24,7 +26,9 @@ def getModules(module):
 class Orchestrator:
     def __init__(self):
         self.messages = []
-        self.memory = [] #TODO: move to DB
+        self.memories = [] #TODO: move to DB
+    
+    def setup(self):
         allModulesClasses = getModules(nativeModules) + getModules(customModules)
         self.modules = [obj() for obj in allModulesClasses] 
 
@@ -33,6 +37,24 @@ class Orchestrator:
     
     def getModules(self):
         return self.modules
+
+    def createMemory(self,key,record,expirationInSeconds):
+        created = datetime.datetime.now()
+        expiration = created + datetime.timedelta(seconds = expirationInSeconds)
+        self.memories.append({
+            'key':key,
+            'record':record,
+            'created':created,
+            'expiration':expiration
+        })
+
+    def listMemoriesByKey(self,key): # TODO: move to DB
+        filtered = []
+        now = datetime.datetime.now()
+        for memory in self.memories:
+            if(memory['key'] == key and now <= memory['expiration']):
+                filtered.append(memory)
+        return filtered
 
     def runIteration(self):
         outputMessages = []

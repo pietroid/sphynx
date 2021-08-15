@@ -1,5 +1,5 @@
-from audio_capture import AudioCapture
-from audio_recognition import AudioRecognition
+from audioCapture import AudioCapture
+from audioRecognition import AudioRecognition
 import sounddevice as sd
 import queue
 samplerate = 44100
