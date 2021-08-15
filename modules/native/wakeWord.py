@@ -4,7 +4,7 @@ from orchestrator.orchestrator import Orchestrator
 
 class WakeWord:
     def __init__(self):
-        self.timeout = 300
+        self.timeout = 10
         self.wakeWord = 'hey jarvis'
         self.orchestrator = Orchestrator()
         self.listeningKey = 'LISTENING'

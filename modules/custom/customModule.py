@@ -1,6 +1,7 @@
 import sys
 sys.path.append('../')
 from modules.templates import commandTemplate
+from services import textToSpeech
 
 class CustomModule(commandTemplate.CommandTemplate):
 
@@ -15,5 +16,6 @@ class CustomModule(commandTemplate.CommandTemplate):
     def execute(self,message):
         newMessage = message
         newMessage['type'] = self.typeOutputExecute
-        print('HELLO! WHAT YOU WANT?')
+        tts = textToSpeech.TextToSpeech()
+        tts.speak('Hi! How are you?')
         return newMessage
