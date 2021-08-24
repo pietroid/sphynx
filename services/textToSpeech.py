@@ -1,4 +1,5 @@
-import pyttsx3
+import requests
+from playsound import playsound
 import sys
 import threading
 
@@ -8,8 +9,13 @@ from utils.decorators import singleton
 @singleton
 class TextToSpeech():
     def __init__(self):
-        self.engine = pyttsx3.init()
-        self.engine.setProperty('rate', 100)
+        self.default_params = {
+            'INPUT_TEXT':'',
+            'INPUT_TYPE':'TEXT',
+            'OUTPUT_TYPE':'AUDIO',
+            'LOCALE':'en_US',
+            'AUDIO':'WAVE_FILE'
+        }
 
 
     def speak(self, text):
@@ -19,5 +25,8 @@ class TextToSpeech():
         ).start()
 
     def runSpeakThread(self, text):
-        self.engine.say(text)
-        self.engine.runAndWait()
+        self.default_params['INPUT_TEXT'] = text
+        r = requests.get('http://localhost:59125/process',params=self.default_params)
+        with open('file_temp.wav','wb') as f:
+            f.write(r.content)
+            playsound('file_temp.wav')
