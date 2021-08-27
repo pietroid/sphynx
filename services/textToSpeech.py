@@ -9,13 +9,7 @@ from utils.decorators import singleton
 @singleton
 class TextToSpeech():
     def __init__(self):
-        self.default_params = {
-            'INPUT_TEXT':'',
-            'INPUT_TYPE':'TEXT',
-            'OUTPUT_TYPE':'AUDIO',
-            'LOCALE':'en_US',
-            'AUDIO':'WAVE_FILE'
-        }
+        self.language = 'en-US'
 
 
     def speak(self, text):
@@ -25,8 +19,6 @@ class TextToSpeech():
         ).start()
 
     def runSpeakThread(self, text):
-        self.default_params['INPUT_TEXT'] = text
-        r = requests.get('http://localhost:59125/process',params=self.default_params)
-        with open('file_temp.wav','wb') as f:
-            f.write(r.content)
-            Popen(['paplay','file_temp.wav'])
+        sProcess = Popen(['pico2wave','-l',self.language,'-w','file_temp.wav','"'+text+'"'])
+        sProcess.wait()
+        Popen(['paplay','file_temp.wav'])
