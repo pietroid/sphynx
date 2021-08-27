@@ -1,7 +1,7 @@
 import requests
-from playsound import playsound
 import sys
 import threading
+from subprocess import Popen
 
 sys.path.append('../')
 from utils.decorators import singleton
@@ -29,4 +29,4 @@ class TextToSpeech():
         r = requests.get('http://localhost:59125/process',params=self.default_params)
         with open('file_temp.wav','wb') as f:
             f.write(r.content)
-            playsound('file_temp.wav')
+            Popen(['paplay','file_temp.wav'])
