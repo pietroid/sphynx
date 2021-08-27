@@ -4,8 +4,8 @@ from orchestrator.orchestrator import Orchestrator
 import sounddevice as sd
 import queue
 
-samplerate = 44100
-device = 18
+samplerate = 16000
+device = 1
 
 audioCapture = AudioCapture(samplerate,device)
 audioRecognition = AudioRecognition(samplerate)

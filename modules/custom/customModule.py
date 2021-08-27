@@ -17,5 +17,5 @@ class CustomModule(commandTemplate.CommandTemplate):
         newMessage = message
         newMessage['type'] = self.typeOutputExecute
         tts = textToSpeech.TextToSpeech()
-        tts.speak('Hi! How are you?')
+        tts.speak('Hello!! How are you doing? Are you alright?')
         return newMessage
