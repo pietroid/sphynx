@@ -1,1 +1,1 @@
-source libs/bin/activate && python3 main.py
+source libs/bin/activate && LD_PRELOAD=/usr/lib/arm-linux-gnueabihf/libatomic.so.1.2.0 python3 main.py
